@@ -10,6 +10,13 @@ public class TestTaskContext:DbContext
     {
 
     }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+        {
+            relationship.DeleteBehavior = DeleteBehavior.Restrict;
+        }
+    }
 
     public DbSet<User> Users { get; set; }
     public DbSet<Product> Products { get; set; }

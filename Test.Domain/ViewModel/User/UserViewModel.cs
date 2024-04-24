@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Test.Domain.ViewModel;
+namespace Test.Domain.ViewModel.User;
 
 public class UserViewModel
 {
@@ -10,7 +10,9 @@ public class UserViewModel
     [EmailAddress(ErrorMessage = "ایمیل وارد شده معتبر نمی باشد")]
     public string Email { get; set; }
 
-    public int PhoneNumber { get; set; }
+    [Display(Name = "شماره تلفن همراه")]
+    [MaxLength(11)]
+    public string PhoneNumber { get; set; }
 
     [Display(Name = "رمز عبور")]
     [Required(ErrorMessage = "لطفا {0} را وارد کنید")]

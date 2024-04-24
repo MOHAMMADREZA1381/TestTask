@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Test.Domain.Models.Product;
 
@@ -18,4 +19,10 @@ public class Product:BaseEntity
 
     public bool IsAvailable { get; set; } = true;
 
+    public int UserId { get; set; }
+    #region Rel
+    [ForeignKey("UserId")]
+    public User.User User { get; set; }
+
+    #endregion
 }

@@ -4,8 +4,8 @@ using Test.Application.IServices;
 using Test.Application.PasswordHelper;
 using Test.Domain.IRepositories;
 using Test.Domain.Models.User;
-using Test.Domain.ViewModel;
 using Test.Application.PasswordHelper;
+using Test.Domain.ViewModel.User;
 namespace Test.Application.Services;
 
 public class UserService : IUserService
@@ -14,7 +14,7 @@ public class UserService : IUserService
 
     private readonly IUserRepository _repository;
     private readonly IMapper _mapper;
-    public UserService(IUserRepository repository,IMapper mapper)
+    public UserService(IUserRepository repository, IMapper mapper)
     {
         _repository = repository;
         _mapper = mapper ?? throw new ArgumentException(nameof(mapper));
@@ -25,13 +25,19 @@ public class UserService : IUserService
     public async Task Register(UserViewModel viewModel)
     {
         viewModel.PassWord = PasswordHelper.EncodePassword.EncodePasswordSha256(viewModel.PassWord);
-       await _repository.Register(_mapper.Map<User>(viewModel));
-       await _repository.SaveChanges();
+        await _repository.Register(_mapper.Map<User>(viewModel));
+        await _repository.SaveChanges();
     }
 
-    public async Task<User> GetUserByEmail(string Email)
+    public async Task<User> GetUserByEmail(string? Email)
     {
-       return await _repository.GetUserByEmail(Email);
+        return await _repository.GetUserByEmail(Email);
+    }
+
+    public async Task<UserInfoViewModel> GetUserById(int Id)
+    {
+        var User = await _repository.GetUserById(Id);
+        return _mapper.Map<UserInfoViewModel>(User);
     }
 
 

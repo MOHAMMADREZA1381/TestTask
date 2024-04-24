@@ -12,8 +12,10 @@ public class DependencyContainer
     {
         //    <---Application LAYER--->
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IProductService, ProductService>();
 
         //    <---Data Layer --->
+        services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
 
     }

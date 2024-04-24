@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infra.Test.Data.Migrations
 {
     [DbContext(typeof(TestTaskContext))]
-    [Migration("20240424182129_Add-ProducTbl")]
-    partial class AddProducTbl
+    [Migration("20240424202925_ChangeTypeOfPhone")]
+    partial class ChangeTypeOfPhone
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,7 +52,7 @@ namespace Infra.Test.Data.Migrations
                         .HasMaxLength(55)
                         .HasColumnType("nvarchar(55)");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -83,8 +83,9 @@ namespace Infra.Test.Data.Migrations
                         .HasMaxLength(400)
                         .HasColumnType("nvarchar(400)");
 
-                    b.Property<int>("PhoneNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -93,9 +94,13 @@ namespace Infra.Test.Data.Migrations
 
             modelBuilder.Entity("Test.Domain.Models.Product.Product", b =>
                 {
-                    b.HasOne("Test.Domain.Models.User.User", null)
+                    b.HasOne("Test.Domain.Models.User.User", "User")
                         .WithMany("Products")
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Test.Domain.Models.User.User", b =>

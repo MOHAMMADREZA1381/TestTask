@@ -9,7 +9,6 @@
   <ItemGroup>
     <Folder Include="IRepositories\" />
     <Folder Include="Models\Product\" />
-    <Folder Include="ViewModel\" />
   </ItemGroup>
 
 </Project>

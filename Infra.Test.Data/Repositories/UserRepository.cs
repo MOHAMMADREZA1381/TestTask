@@ -21,9 +21,19 @@ public class UserRepository:IUserRepository
        await _taskContext.Users.AddAsync(user);
     }
 
-    public async Task<User> GetUserByEmail(string Email)
+    public async Task<User> GetUserByEmail(string? Email)
     {
        return await _taskContext.Users.Where(a => a.Email == Email).FirstOrDefaultAsync();
+    }
+
+    public async Task<User> GetUserById(int Id)
+    {
+        return await _taskContext.Users.Where(a => a.Id == Id).FirstOrDefaultAsync();
+    }
+
+    public async Task<bool> AlreadyRegister(string Email)
+    {
+        return _taskContext.Users.Any(a => a.Email == Email);
     }
 
 

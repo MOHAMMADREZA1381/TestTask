@@ -3,9 +3,10 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 using Test.Application.IServices;
 using Test.Domain.Models.User;
-using Test.Domain.ViewModel;
+using Test.Domain.ViewModel.User;
 
 namespace TestTask.Controllers
 {
@@ -16,7 +17,6 @@ namespace TestTask.Controllers
         #region Services
 
         private readonly IUserService _service;
-
         public AccountController(IUserService service)
         {
             _service = service;
@@ -25,7 +25,7 @@ namespace TestTask.Controllers
         #endregion
 
         [HttpPost("register")]
-        public async Task<JsonResult> Register(UserViewModel viewModel)
+        public async Task<JsonResult> Register([FromBody] UserViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
@@ -37,7 +37,7 @@ namespace TestTask.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<JsonResult> Login(LoginViewModel viewModel)
+        public async Task<IActionResult> Login(LoginViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
@@ -51,6 +51,7 @@ namespace TestTask.Controllers
                     case State.WrongPassword:
                         return new JsonResult(BadRequest());
                         break;
+                 
                     case State.Successed:
                         List<Claim> claims = new List<Claim>()
                         {
@@ -64,7 +65,7 @@ namespace TestTask.Controllers
 
                         await HttpContext.SignInAsync(principal, new AuthenticationProperties()
                         {
-                            IsPersistent = false
+                            IsPersistent = true
                         });
                         return new JsonResult(Ok());
                 }
@@ -79,19 +80,6 @@ namespace TestTask.Controllers
         {
             await HttpContext.SignOutAsync();
             return Ok();
-        }
-
-
-
-        [HttpGet]
-        public bool Islogin()
-        {
-            bool tes;
-            if (User.Identity.IsAuthenticated)
-            {
-                return true;
-            }
-            return false;
         }
     }
 }

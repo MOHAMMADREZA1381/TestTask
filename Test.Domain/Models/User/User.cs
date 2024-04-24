@@ -17,7 +17,8 @@ public class User : BaseEntity
     [MinLength(4, ErrorMessage = "{0} نمی تواند کمتر از {1} کاراکتر باشد")]
     public string PassWord { get; set; }
 
-    public int PhoneNumber{ get; set; }
+    
+    public string PhoneNumber{ get; set; }
 
     #region Rels
 
