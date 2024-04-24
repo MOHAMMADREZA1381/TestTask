@@ -1,10 +1,12 @@
 ﻿using Test.Domain.Models.User;
+using Test.Domain.ViewModel;
 
 namespace Test.Domain.IRepositories;
 
 public interface IUserRepository
 {
-    public void Register(User user);
-   
-    public void SaveChanges();
+    public Task Register(User user);
+    public Task<User> GetUserByEmail(string Email);
+
+    public Task SaveChanges();
 }

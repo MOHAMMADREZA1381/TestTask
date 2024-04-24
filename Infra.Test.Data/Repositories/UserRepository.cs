@@ -1,6 +1,8 @@
 ﻿using Infra.Test.Data.Context;
+using Microsoft.EntityFrameworkCore;
 using Test.Domain.IRepositories;
 using Test.Domain.Models.User;
+using Test.Domain.ViewModel;
 
 namespace Infra.Test.Data.Repositories;
 
@@ -14,15 +16,19 @@ public class UserRepository:IUserRepository
     }
     #endregion
 
-    public void Register(User user)
+    public async Task Register(User user)
     {
-        _taskContext.Users.Add(user);
+       await _taskContext.Users.AddAsync(user);
     }
 
- 
-
-    public void SaveChanges()
+    public async Task<User> GetUserByEmail(string Email)
     {
-        _taskContext.SaveChanges();
+       return await _taskContext.Users.Where(a => a.Email == Email).FirstOrDefaultAsync();
+    }
+
+
+    public async Task SaveChanges()
+    {
+       await _taskContext.SaveChangesAsync();
     }
 }
